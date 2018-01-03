@@ -1,10 +1,21 @@
 // My Dependencies!
 const express = require('express');
-const VoiceResponse = require('twilio').twiml.VoiceResponse;
+const path = require('path');
+const Twilio = require('twilio');
+const VoiceResponse = Twilio.twiml.VoiceResponse;
 const urlencoded = require('body-parser').urlencoded;
+
+//TWILIO ACCOUNT INFO ETC. 
+const CONFIG = require("./secrets") 
+
+//Create Twilio Client
+const client = new Twilio(CONFIG.accountSid, CONFIG.authToken);
 
 //Create the Application
 const app = express();
+
+//Host Index page for phase2/3
+app.use(express.static(path.join(__dirname, 'public')));
 
 //Body Parser to parse the inpput
 app.use(urlencoded({
@@ -14,7 +25,7 @@ app.use(urlencoded({
 //Post Request to handle Incoming calls!
 app.post('/voice', (req, res) => {
   const twiML = new VoiceResponse();
-
+  console.log(req);
   // Function to help get the user input
   function gather() {
     const gather = twiML.gather();
@@ -41,9 +52,34 @@ app.post('/voice', (req, res) => {
   } else {
     gather();
   }
+
   //Once the game is over, send a response back to end the call
   res.type('text/xml');
   res.send(twiML.toString());
 });
 
+
+
+app.post('/outboundVoice', (req, res) => {
+
+  // Gets the number of seconds and converts it to milliseconds or sets it to 0 based on the input. 
+  let secondsDelay = req.body.delay ? 1000 * req.body.delay : 0;
+
+  //Delays the call by the number of seconds provided and then calls the function which actually calls the input number. 
+  setTimeout(call, secondsDelay);
+  res.send(`Call Sent to : ${req.body.phoneNumber} with ${req.body.delay} seconds of delay`);
+
+  //Call Function to call User
+  function call() {
+    client.api.calls
+      .create({
+        url: CONFIG.url,
+        to: req.body.phoneNumber,
+        from: CONFIG.myNumber,
+      })
+      .then((call) => console.log(call.sid));
+  }
+})
+
+// Listens for any Requests
 app.listen(3000, () => console.log("App is Listening on http://localhost:3000"));

@@ -1,0 +1,37 @@
+body{
+    background-color: azure;
+}
+
+.container{
+    width: 50%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.formRow {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-bottom: 2em;
+    align-content: center;
+}
+
+.formRow input[type='text'],
+.formRow input[type='number'],
+.formRow input[type='tel'] {
+    background-color: #FFFFFF;
+    border: 1px solid #D6D9DC;
+    width: 1000%;
+    padding: 10px;
+    font-size: .75em;
+    margin-top: 1em;
+}
+
+.submitButton{
+    width: 23%;
+    margin: 0 auto;
+    padding: 10px;
+    background-color: #000;
+    color: #FFF;
+}
