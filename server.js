@@ -73,12 +73,13 @@ app.post('/outboundVoice', (req, res) => {
   function call() {
     client.api.calls
       .create({
-        url: CONFIG.url,
+        url: CONFIG.URL,
         to: req.body.phoneNumber,
         from: CONFIG.myNumber,
       })
       .then((call) => console.log(call.sid));
   }
+  
 })
 
 // Listens for any Requests
