@@ -59,7 +59,7 @@ app.post('/voice', (req, res) => {
 });
 
 
-
+// Post request for creating outbound calls
 app.post('/outboundVoice', (req, res) => {
 
   // Gets the number of seconds and converts it to milliseconds or sets it to 0 based on the input. 
@@ -79,7 +79,7 @@ app.post('/outboundVoice', (req, res) => {
       })
       .then((call) => console.log(call.sid));
   }
-  
+
 })
 
 // Listens for any Requests
